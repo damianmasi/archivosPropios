@@ -1,0 +1,136 @@
+warning: LF will be replaced by CRLF in DrHouse/src/example.wlk.
+The file will have its original line endings in your working directory.
+[1mdiff --git a/DrHouse/src/example.wlk b/DrHouse/src/example.wlk[m
+[1mindex fb5efbc..21237f4 100644[m
+[1m--- a/DrHouse/src/example.wlk[m
+[1m+++ b/DrHouse/src/example.wlk[m
+[36m@@ -1,6 +1,55 @@[m
+[31m-/** First Wollok example */[m
+[31m-object wollok {[m
+[31m-	method howAreYou() {[m
+[31m-		return 'I am Wolloktastic!'[m
+[32m+[m[32mclass Persona{[m
+[32m+[m	[32mvar property enfermedades = [][m
+[32m+[m	[32mvar property celulas[m
+[32m+[m	[32mvar property temperatura[m
+[32m+[m	[32mvar property enComa = false[m
+[32m+[m[41m	[m
+[32m+[m	[32mmethod contraerEnfermedad(enfermedad){[m
+[32m+[m		[32menfermedades.add(enfermedad)[m
+ 	}[m
+[32m+[m	[32mmethod pasarUnDia(){[m
+[32m+[m		[32menfermedades.forEach{enfermedad => enfermedad.efecto(self)}[m[41m		[m
+[32m+[m	[32m}[m
+[32m+[m	[32mmethod valorTemperatura(nuevaTemperatura){[m
+[32m+[m		[32mtemperatura = nuevaTemperatura[m[41m [m
+[32m+[m	[32m}[m
+[32m+[m	[32mmethod cantCelulas(nuevasCelulas){[m
+[32m+[m		[32mcelulas = nuevasCelulas[m
+[32m+[m	[32m}[m
+[32m+[m[32m}[m
+[32m+[m[32m/*		ENFERMEDADES 	*/[m
+[32m+[m[32mclass EnfermedadInfecciosa inherits Enfermedad{[m
+[32m+[m[41m	[m
+[32m+[m	[32mmethod efecto(persona){[m
+[32m+[m		[32mpersona.valorTemperatura(persona.temperatura() + celulasAmenazadas/1000)[m
+[32m+[m[41m		[m
+[32m+[m		[32mif(persona.temperatura() >= 45){[m
+[32m+[m			[32mpersona.enComa(true)[m
+[32m+[m			[32mpersona.temperatura(45)[m
+[32m+[m		[32m}[m[41m	[m
+[32m+[m	[32m}[m
+[32m+[m	[32mmethod reproducirce(){[m
+[32m+[m		[32mcelulasAmenazadas *= 2[m[41m	[m
+[32m+[m	[32m}[m
+[32m+[m	[32mmethod esAgresiva(persona){[m
+[32m+[m		[32mreturn celulasAmenazadas > persona.celulas()*0.1[m
+[32m+[m	[32m}[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mclass EnfermedadAutoinmune inherits Enfermedad{[m
+[32m+[m	[32mvar property diasAfecta = 0[m
+[32m+[m[41m	[m
+[32m+[m	[32mmethod efecto(persona){[m
+[32m+[m		[32mpersona.cantCelulas(persona.celulas() - celulasAmenazadas)[m[41m	[m
+[32m+[m		[32mdiasAfecta += 1[m
+[32m+[m	[32m}[m
+[32m+[m	[32mmethod esAgresiva(persona){[m
+[32m+[m		[32mreturn diasAfecta > 30[m
+[32m+[m	[32m}[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mclass Enfermedad{[m
+[32m+[m	[32mvar property celulasAmenazadas[m
+[32m+[m[41m	[m
+ }[m
+[41m+[m
+[1mdiff --git a/DrHouse/src/testDrHouse.wtest b/DrHouse/src/testDrHouse.wtest[m
+[1mindex bac16ba..8257c64 100644[m
+[1m--- a/DrHouse/src/testDrHouse.wtest[m
+[1m+++ b/DrHouse/src/testDrHouse.wtest[m
+[36m@@ -1,6 +1,62 @@[m
+[32m+[m[32mimport example.*[m
+ [m
+[31m-test "testX" {[m
+[32m+[m[32mdescribe "testDoctor"{[m
+[32m+[m[41m	[m
+[32m+[m[41m	[m
+[32m+[m[41m	[m
+[32m+[m	[32mvar juan = new Persona(celulas = 1000, temperatura = 40)[m
+[32m+[m	[32mvar lupus = new EnfermedadAutoinmune(celulasAmenazadas = 100)[m
+[32m+[m	[32mvar malaria = new EnfermedadInfecciosa(celulasAmenazadas = 1000)[m
+ [m
+[31m-	assert.that(true)[m
+[32m+[m	[32mtest "juan contrae enfermedad"{[m
+[32m+[m		[32mjuan.contraerEnfermedad(lupus)[m
+[32m+[m		[32mjuan.contraerEnfermedad(malaria)[m
+[32m+[m[41m		[m
+[32m+[m		[32massert.equals(lupus , juan.enfermedades().first())[m
+[32m+[m		[32massert.equals(malaria , juan.enfermedades().last())[m
+[32m+[m	[32m}[m
+[32m+[m	[32mtest "a juan lo afecta enfermedad infecciosa"{[m
+[32m+[m		[32mjuan.contraerEnfermedad(malaria)[m
+[32m+[m		[32mjuan.pasarUnDia()[m
+[32m+[m[41m		[m
+[32m+[m		[32massert.equals(41, juan.temperatura())[m
+[32m+[m	[32m}[m
+[32m+[m	[32mtest "a juan lo afecta enfermedad autoinmune"{[m
+[32m+[m		[32mjuan.contraerEnfermedad(lupus)[m
+[32m+[m		[32mjuan.pasarUnDia()[m
+[32m+[m[41m		[m
+[32m+[m		[32massert.equals(900,juan.celulas())[m
+[32m+[m	[32m}[m
+[32m+[m	[32mtest "infecciosa se reproduce y afecta a juan"{[m
+[32m+[m		[32mjuan.contraerEnfermedad(malaria)[m
+[32m+[m		[32mmalaria.reproducirce()[m
+[32m+[m		[32mjuan.pasarUnDia()[m
+[32m+[m[41m		[m
+[32m+[m		[32massert.equals(42, juan.temperatura())[m
+ [m
+[32m+[m	[32m}[m
+[32m+[m	[32mtest "juan entra en coma"{[m
+[32m+[m		[32mjuan.contraerEnfermedad(malaria)[m
+[32m+[m		[32mmalaria.reproducirce()[m
+[32m+[m		[32mmalaria.reproducirce()[m
+[32m+[m		[32mmalaria.reproducirce()[m
+[32m+[m		[32mmalaria.reproducirce()[m
+[32m+[m		[32mmalaria.reproducirce()[m
+[32m+[m		[32mjuan.pasarUnDia()[m
+[32m+[m[41m		 		[m
+[32m+[m[41m		[m
+[32m+[m		[32massert.that(juan.enComa())[m
+[32m+[m	[32m}[m
+[32m+[m	[32mtest "autoinmune agresiva"{[m
+[32m+[m		[32mlupus.diasAfecta(31)[m
+[32m+[m[41m		[m
+[32m+[m		[32mjuan.contraerEnfermedad(lupus)[m
+[32m+[m[41m		[m
+[32m+[m		[32massert.that(lupus.esAgresiva(juan))[m
+[32m+[m[41m		[m
+[32m+[m	[32m}[m
+[32m+[m	[32mtest "infecciosa agresiva"{[m
+[32m+[m		[32mjuan.contraerEnfermedad(malaria)[m
+[32m+[m		[32massert.that(malaria.esAgresiva(juan))[m
+[32m+[m	[32m}[m
+ }[m
+\ No newline at end of file[m

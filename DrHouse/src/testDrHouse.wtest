@@ -1,6 +1,62 @@
+import example.*
 
-test "testX" {
+describe "testDoctor"{
+	
+	
+	
+	var juan = new Persona(celulas = 1000, temperatura = 40)
+	var lupus = new EnfermedadAutoinmune(celulasAmenazadas = 100)
+	var malaria = new EnfermedadInfecciosa(celulasAmenazadas = 1000)
 
-	assert.that(true)
+	test "juan contrae enfermedad"{
+		juan.contraerEnfermedad(lupus)
+		juan.contraerEnfermedad(malaria)
+		
+		assert.equals(lupus , juan.enfermedades().first())
+		assert.equals(malaria , juan.enfermedades().last())
+	}
+	test "a juan lo afecta enfermedad infecciosa"{
+		juan.contraerEnfermedad(malaria)
+		juan.pasarUnDia()
+		
+		assert.equals(41, juan.temperatura())
+	}
+	test "a juan lo afecta enfermedad autoinmune"{
+		juan.contraerEnfermedad(lupus)
+		juan.pasarUnDia()
+		
+		assert.equals(900,juan.celulas())
+	}
+	test "infecciosa se reproduce y afecta a juan"{
+		juan.contraerEnfermedad(malaria)
+		malaria.reproducirce()
+		juan.pasarUnDia()
+		
+		assert.equals(42, juan.temperatura())
 
+	}
+	test "juan entra en coma"{
+		juan.contraerEnfermedad(malaria)
+		malaria.reproducirce()
+		malaria.reproducirce()
+		malaria.reproducirce()
+		malaria.reproducirce()
+		malaria.reproducirce()
+		juan.pasarUnDia()
+		 		
+		
+		assert.that(juan.enComa())
+	}
+	test "autoinmune agresiva"{
+		lupus.diasAfecta(31)
+		
+		juan.contraerEnfermedad(lupus)
+		
+		assert.that(lupus.esAgresiva(juan))
+		
+	}
+	test "infecciosa agresiva"{
+		juan.contraerEnfermedad(malaria)
+		assert.that(malaria.esAgresiva(juan))
+	}
 }
