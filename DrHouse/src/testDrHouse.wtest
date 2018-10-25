@@ -4,7 +4,7 @@ describe "testDoctor"{
 	
 	
 	
-	var juan = new Persona(celulas = 1000, temperatura = 40)
+	var juan = new Persona(celulas = 1000, temperatura = 40, enfermedades = [])
 	var lupus = new EnfermedadAutoinmune(celulasAmenazadas = 100)
 	var malaria = new EnfermedadInfecciosa(celulasAmenazadas = 1000)
 

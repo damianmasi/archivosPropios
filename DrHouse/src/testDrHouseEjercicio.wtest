@@ -1,0 +1,29 @@
+import example.*
+
+describe "test del ejercicio"{
+	
+	var malaria = new EnfermedadInfecciosa(celulasAmenazadas = 500)
+	var otitis = new EnfermedadInfecciosa(celulasAmenazadas = 100)
+	var lupus = new EnfermedadAutoinmune(celulasAmenazadas = 10000)
+	var malariaPulente = new EnfermedadInfecciosa(celulasAmenazadas = 800)
+	
+	var logan = new Persona(celulas = 3000000, temperatura = 36, enfermedades = [malaria, otitis, lupus])
+	var frank = new Persona(celulas = 3500000, temperatura = 36, enfermedades = [])
+	
+	test "flank contrae malariaPulente"{
+		frank.contraerEnfermedad(malariaPulente)
+		
+		assert.equals(malariaPulente , frank.enfermedades().first())
+	}
+	test "la malaria de logan se reproduce"{
+		malaria.reproducirce()
+		
+		assert.equals(1000, logan.enfermedades().first().celulasAmenazadas())
+	}
+	test "a logan le pasa un dia"{
+		logan.pasarUnDia()
+		
+		assert.equals(36.6, logan.temperatura())
+		assert.equals(2990000, logan.celulas())
+	}
+}

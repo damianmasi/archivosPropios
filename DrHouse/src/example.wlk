@@ -1,5 +1,5 @@
 class Persona{
-	var property enfermedades = []
+	var property enfermedades
 	var property celulas
 	var property temperatura
 	var property enComa = false
@@ -15,6 +15,14 @@ class Persona{
 	}
 	method cantCelulas(nuevasCelulas){
 		celulas = nuevasCelulas
+	}
+	method cantDeCelulasAmenazadasEnfAgre(){
+		var enfermedadesAgresivas = enfermedades.filter{enfermedad => enfermedad.esAgresiva(self)}
+		return  enfermedadesAgresivas.sum{enfermedad => enfermedad.celulasAmenzadas()} 
+	}
+	method enfermedadConMasCelulasAmenazadas(){
+		var maximoCelulas = enfermedades.max{enfermedad => enfermedad.celulasAmenazadas()}
+		return enfermedades.find{enfermedad => enfermedad.celulasAmenazadas() == maximoCelulas}
 	}
 }
 /*		ENFERMEDADES 	*/
@@ -42,6 +50,11 @@ class EnfermedadAutoinmune inherits Enfermedad{
 	method efecto(persona){
 		persona.cantCelulas(persona.celulas() - celulasAmenazadas)	
 		diasAfecta += 1
+		
+		if(persona.celulas() <= 1000000){
+			persona.enComa(true)
+			persona.celulas(1000000)
+		}	
 	}
 	method esAgresiva(persona){
 		return diasAfecta > 30
