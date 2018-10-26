@@ -1,0 +1,45 @@
+import example.*
+
+describe "tests" {	
+	
+	var charmander = new Pokemon(estado = saludable, defensa = 15, ptsVelocidad = 10 ,	ptsAtaque = 15, ptsVida = 100)
+	var pikachu = new Pokemon(estado = saludable, defensa = 10, ptsVelocidad = 15 ,	ptsAtaque = 8, ptsVida = 100)
+	
+	fixture{
+		pikachu.agregarAtaque(placaje)
+		pikachu.agregarAtaque(veneno)
+		pikachu.agregarAtaque(atactrueno)
+	}	
+	
+	test "agregar ataque a un pokemon" {
+		charmander.agregarAtaque(placaje)
+		assert.equals(placaje,charmander.ataques().first())
+	
+	}
+	test "un pokemon ataca con veneno a otro"{
+		pikachu.atacar(veneno,charmander)
+		
+		assert.equals(envenenado, charmander.estado())
+		assert.equals(100, charmander.ptsVida())
+	}
+	test "un pokemon ataca con atactrueno a otro"{
+		pikachu.atacar(atactrueno,charmander)
+
+		assert.that(charmander.estado() != envenenado)
+		assert.equals(85,charmander.ptsVida())
+	}
+	test "un pokemon ataca con placaje a otro"{
+		pikachu.atacar(placaje,charmander)
+		
+		assert.equals(92,charmander.ptsVida())
+	}
+	/*test "pokemon ataca pralizado"{
+		
+	}*/
+	test "pokemon ataca envenenado"{
+		pikachu.estado(envenenado)
+		pikachu.atacar(placaje,charmander)
+		
+		assert.equals(90, pikachu.ptsVida())
+	}
+}
